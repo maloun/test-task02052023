@@ -1,5 +1,5 @@
-﻿@using demo.Data.Models
-@model IEnumerable<AppartmentModel>
+﻿@using demo.Views.ViewData
+@model IEnumerable<AppartmentsViewData>
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -23,13 +23,21 @@
 </div> 
 
 <table>
+    <tr>
+        <td>Улица</td>
+        <td>Дом</td>
+        <td>Квартира</td>
+        <td>Показания счётчика</td>
+    </tr>
 @{
-    foreach (var appartment in Model)
-    {
-        <tr>
-            <td>@appartment.Name</td>
-            <td>@appartment.Meter.Number</td>
-        </tr>      
-    }
+        foreach (AppartmentsViewData appartment in Model)
+{
+    <tr>
+        <td>@appartment.Address.Street</td>
+        <td>@appartment.Address.House</td>
+        <td>@appartment.Address.ApartmentNumber</td>
+        <td>@appartment.Meter.Number</td>
+    </tr>      
+}
 }
 </table>

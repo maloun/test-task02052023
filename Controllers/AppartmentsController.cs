@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using demo.Data.Interfaces;
 using demo.Models;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
+using demo.Models.Interfaces;
 
 namespace mvc.Controllers
 {
@@ -18,17 +18,21 @@ namespace mvc.Controllers
             _appartments = appartments;
         }
 
-        public ViewResult ListVerifyedMeters()
-        {
-            ViewBag.Title = "Показания счётчиков в квартирах";
-            var appartments = _appartments.GetAppartmentsWithVerifyedMeters();
-            return View(appartments);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public ViewResult ListVerifyedMeters() 
+        {
+            ViewBag.Title = "Показания счётчиков в квартирах";
+            var appartments = _appartments.GetAppartmentsWithVerifyedMeters();
+
+            //if (!appartments.Any())
+            //   throw new Exception("Не найдено ни одного результата");
+
+            return View(appartments);
         }
     }
 }

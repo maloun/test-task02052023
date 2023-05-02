@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using demo.Data;
+using demo.Models.Database;
 
 #nullable disable
 
 namespace demo.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230501202222_InitialCreate")]
-    partial class InitialCreate
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace demo.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("demo.Data.Models.AppartmentModel", b =>
+            modelBuilder.Entity("demo.Models.Database.AppartmentsTable", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -47,7 +44,7 @@ namespace demo.Data.Migrations
                     b.ToTable("Appartments");
                 });
 
-            modelBuilder.Entity("demo.Data.Models.MeterModel", b =>
+            modelBuilder.Entity("demo.Models.Database.MetersTable", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +66,7 @@ namespace demo.Data.Migrations
                     b.ToTable("Meters");
                 });
 
-            modelBuilder.Entity("demo.Data.Models.ReadingsModel", b =>
+            modelBuilder.Entity("demo.Models.Database.ReadingsTable", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,24 +85,39 @@ namespace demo.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MeterId");
+
                     b.ToTable("Readings");
                 });
 
-            modelBuilder.Entity("demo.Data.Models.AppartmentModel", b =>
+            modelBuilder.Entity("demo.Models.Database.AppartmentsTable", b =>
                 {
-                    b.HasOne("demo.Data.Models.MeterModel", "Meter")
+                    b.HasOne("demo.Models.Database.MetersTable", "Meter")
                         .WithOne("Appartment")
-                        .HasForeignKey("demo.Data.Models.AppartmentModel", "MeterId")
+                        .HasForeignKey("demo.Models.Database.AppartmentsTable", "MeterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Meter");
                 });
 
-            modelBuilder.Entity("demo.Data.Models.MeterModel", b =>
+            modelBuilder.Entity("demo.Models.Database.ReadingsTable", b =>
+                {
+                    b.HasOne("demo.Models.Database.MetersTable", "Meter")
+                        .WithMany("Readings")
+                        .HasForeignKey("MeterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Meter");
+                });
+
+            modelBuilder.Entity("demo.Models.Database.MetersTable", b =>
                 {
                     b.Navigation("Appartment")
                         .IsRequired();
+
+                    b.Navigation("Readings");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,6 @@
-﻿using demo.Data;
-using demo.Data.Implementers;
-using demo.Data.Interfaces;
-using demo.Data.Mocks;
+﻿using demo.Models.Database;
+using demo.Models.Interfaces;
+using demo.Models.Mocks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

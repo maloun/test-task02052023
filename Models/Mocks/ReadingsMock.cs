@@ -1,7 +1,7 @@
-﻿using demo.Data.Interfaces;
-using demo.Data.Models;
+﻿using demo.Models.Database;
+using demo.Models.Interfaces;
 
-namespace demo.Data.Implementers
+namespace demo.Models.Mocks
 {
     public class ReadingsMock : IReadings
     {
@@ -12,12 +12,10 @@ namespace demo.Data.Implementers
             _dbContext = dbContext;
         }
 
-        public void UploadAndValidateReadings(ReadingsModel readings)
+        public void UploadAndValidateReadings(ReadingsTable readings)
         {
             _dbContext.Readings.Add(readings);
             _dbContext.SaveChanges();
         }
-
-
     }
 }

@@ -1,8 +1,7 @@
-﻿using demo.Data.Interfaces;
-using demo.Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using demo.Models.Database;
+using demo.Models.Interfaces;
 
-namespace demo.Data.Mocks
+namespace demo.Models.Mocks
 {
     public class MetersMock : IMeters
     {
@@ -13,7 +12,7 @@ namespace demo.Data.Mocks
             _dbContext = dbContext;
         }
 
-        public IEnumerable<MeterModel> GetMetersInBuilding(int buildingId)
+        public IEnumerable<MetersTable> GetMetersInBuilding(int buildingId)
         {
             var result = _dbContext.Meters;
             return result;

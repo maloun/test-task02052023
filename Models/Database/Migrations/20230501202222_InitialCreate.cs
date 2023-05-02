@@ -10,7 +10,7 @@ namespace demo.Data.Migrations
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        {     
             migrationBuilder.CreateTable(
                 name: "Meters",
                 columns: table => new
@@ -65,12 +65,12 @@ namespace demo.Data.Migrations
                 name: "IX_Appartments_MeterId",
                 table: "Appartments",
                 column: "MeterId",
-                unique: true);
+                unique: true);            
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        {            
             migrationBuilder.DropTable(
                 name: "Appartments");
 
@@ -78,7 +78,7 @@ namespace demo.Data.Migrations
                 name: "Readings");
 
             migrationBuilder.DropTable(
-                name: "Meters");
+                name: "Meters");            
         }
     }
 }
