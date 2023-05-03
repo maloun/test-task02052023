@@ -1,0 +1,57 @@
+﻿@using demo.Views.Appartments
+@model IEnumerable<ListValidMetersData>
+
+<h1>Показания счётчиков в квартирах</h1>
+
+<table style="margin-bottom: 10px;">
+    <tr><td>Фильр по улице</td><td><input id="streetFilter" type="text" /></td></tr>
+    <tr><td>Фильр по дому</td><td><input id="houseFilter" type="text" /></td></tr>
+</table>
+
+<script>
+    function filterStreetAndHouse() {
+        var street = $("#streetFilter").val().toLowerCase();
+        var house = $("#houseFilter").val().toLowerCase();
+
+        $("#appartmetsByMeters tr").filter(function () {
+            $(this).toggle(
+                $(this.querySelector(".street")).text().toLowerCase().indexOf(street) > -1
+                &&
+                $(this.querySelector(".house")).text().toLowerCase().indexOf(house) > -1
+            )
+        });
+    }
+
+    $(document).ready(function () {
+        $("#streetFilter").on("keyup", filterStreetAndHouse);
+        $("#houseFilter").on("keyup", filterStreetAndHouse);
+    });
+</script>
+
+<table class="resultTable">
+    <thead>
+        <tr>
+            <td>Улица</td>
+            <td>Дом</td>
+            <td>Квартира</td>
+            <td>Номер счётчика</td>
+            <td>Показания счётчика</td>
+        </tr>
+    </thead>
+    <tbody id="appartmetsByMeters">
+@{
+    foreach (ListValidMetersData appartment in Model)
+    {
+        <tr>
+            <td class="street">@appartment.Address.Street</td>
+            <td class="house">@appartment.Address.House</td>
+            <td>@appartment.Address.ApartmentNumber</td>
+            <td>@appartment.MeterNumber</td>
+            <td>@appartment.MeterValue</td>
+        </tr>
+    }
+}
+    </tbody>
+</table>
+
+

@@ -9,10 +9,10 @@ using demo.Models.Database;
 
 #nullable disable
 
-namespace demo.Data.Migrations
+namespace demo.Models.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230501202222_InitialCreate")]
+    [Migration("20230503010643_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace demo.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("demo.Data.Models.AppartmentModel", b =>
+            modelBuilder.Entity("demo.Models.Database.AppartmentsTable", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -47,7 +47,7 @@ namespace demo.Data.Migrations
                     b.ToTable("Appartments");
                 });
 
-            modelBuilder.Entity("demo.Data.Models.MeterModel", b =>
+            modelBuilder.Entity("demo.Models.Database.MetersTable", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace demo.Data.Migrations
                     b.ToTable("Meters");
                 });
 
-            modelBuilder.Entity("demo.Data.Models.ReadingsModel", b =>
+            modelBuilder.Entity("demo.Models.Database.ReadingsTable", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,29 +83,44 @@ namespace demo.Data.Migrations
                     b.Property<int>("MeterId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MeterId");
 
                     b.ToTable("Readings");
                 });
 
-            modelBuilder.Entity("demo.Data.Models.AppartmentModel", b =>
+            modelBuilder.Entity("demo.Models.Database.AppartmentsTable", b =>
                 {
-                    b.HasOne("demo.Data.Models.MeterModel", "Meter")
+                    b.HasOne("demo.Models.Database.MetersTable", "Meter")
                         .WithOne("Appartment")
-                        .HasForeignKey("demo.Data.Models.AppartmentModel", "MeterId")
+                        .HasForeignKey("demo.Models.Database.AppartmentsTable", "MeterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Meter");
                 });
 
-            modelBuilder.Entity("demo.Data.Models.MeterModel", b =>
+            modelBuilder.Entity("demo.Models.Database.ReadingsTable", b =>
+                {
+                    b.HasOne("demo.Models.Database.MetersTable", "Meter")
+                        .WithMany("Readings")
+                        .HasForeignKey("MeterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Meter");
+                });
+
+            modelBuilder.Entity("demo.Models.Database.MetersTable", b =>
                 {
                     b.Navigation("Appartment")
                         .IsRequired();
+
+                    b.Navigation("Readings");
                 });
 #pragma warning restore 612, 618
         }

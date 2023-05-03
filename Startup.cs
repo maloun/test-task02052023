@@ -24,9 +24,9 @@ namespace demo
                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             services.AddControllersWithViews();
-            services.AddTransient<IAppartments, AppartmentMock>();
-            services.AddTransient<IMeters, MetersMock>();
-            services.AddTransient<IReadings, ReadingsMock>();
+            services.AddTransient<IAppartmentsReadings, AppartmentsReadingsMock>();
+            services.AddTransient<IMetersToValidate, MetersMock>();
+            services.AddTransient<IEnterReadings, EnterReadingsMock>();
             services.AddDbContext<AppDbContext>(option => option.UseSqlServer(connectionString));
         }
 
@@ -45,7 +45,7 @@ namespace demo
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Appartments}/{action=ListVerifyedMeters}"
+                    pattern: "{controller=AppartmentsReadings}/{action=ListValidMeters}"
                 );
             });
         }

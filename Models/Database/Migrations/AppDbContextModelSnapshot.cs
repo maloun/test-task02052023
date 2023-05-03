@@ -8,7 +8,7 @@ using demo.Models.Database;
 
 #nullable disable
 
-namespace demo.Data.Migrations
+namespace demo.Models.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -80,8 +80,8 @@ namespace demo.Data.Migrations
                     b.Property<int>("MeterId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

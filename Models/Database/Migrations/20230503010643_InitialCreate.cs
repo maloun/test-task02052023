@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace demo.Data.Migrations
+namespace demo.Models.Database.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
-        {     
+        {
             migrationBuilder.CreateTable(
                 name: "Meters",
                 columns: table => new
@@ -24,21 +24,6 @@ namespace demo.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Meters", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Readings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MeterId = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Readings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -61,16 +46,42 @@ namespace demo.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Readings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MeterId = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<float>(type: "real", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Readings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Readings_Meters_MeterId",
+                        column: x => x.MeterId,
+                        principalTable: "Meters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Appartments_MeterId",
                 table: "Appartments",
                 column: "MeterId",
-                unique: true);            
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Readings_MeterId",
+                table: "Readings",
+                column: "MeterId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
-        {            
+        {
             migrationBuilder.DropTable(
                 name: "Appartments");
 
@@ -78,7 +89,7 @@ namespace demo.Data.Migrations
                 name: "Readings");
 
             migrationBuilder.DropTable(
-                name: "Meters");            
+                name: "Meters");
         }
     }
 }
